@@ -1,21 +1,28 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
+import 'package:lizn/core/typedefs/type_defs.dart';
 import 'package:lizn/core/utils/extensions.dart';
+import 'package:lizn/core/utils/nav.dart';
+import 'package:lizn/core/utils/regex.dart';
+import 'package:lizn/core/utils/snack_bar.dart';
 import 'package:lizn/core/widgets/button.dart';
-import 'package:lizn/features/auth/repositories/auth_remote_repository.dart';
+import 'package:lizn/features/auth/view/pages/login_view.dart';
+import 'package:lizn/features/auth/view/pages/test_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
+import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -42,6 +49,29 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (data) {
+          showSnackBar(
+            context: context,
+            theMessage: 'Account created',
+            theType: NotificationType.success,
+          );
+
+          goTo(context: context, view: const TestView());
+        },
+        error: (error, s) {
+          showSnackBar(
+            context: context,
+            theMessage: error.toString(),
+            theType: NotificationType.failure,
+          );
+        },
+        loading: () {},
+      );
+    });
     return Scaffold(
       // appBar: AppBar(),
       body: SafeArea(
@@ -116,21 +146,45 @@ class _SignupPageState extends State<SignupPage> {
               ),
 
               20.sbH,
-              AnimatedButton(
-                isLoading: false,
-                content: 'Get Started'.txt16(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                onTap: () async {
-                  await AuthRemoteRepository().signup(
-                    name: _nameController.text.trim(),
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text.trim(),
+
+              [
+                _nameController,
+                _emailController,
+                _passwordController,
+                _confirmPasswordController,
+              ].multiSync(
+                builder: (context, child) {
+                  bool validated = _emailController.text.isNotEmpty &&
+                      _nameController.text.isNotEmpty &&
+                      AppRegEx.regexPassword
+                          .hasMatch(_passwordController.text) &&
+                      _passwordController.text ==
+                          _confirmPasswordController.text;
+                  return AnimatedButton(
+                    isLoading: isLoading,
+                    color: switch (validated) {
+                      true => null,
+                      false => Pallete.gradient2.withOpacity(0.5)
+                    },
+                    content: 'Get Started'.txt16(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    onTap: () {
+                      if (validated && !isLoading) {
+                        ref.read(authViewModelProvider.notifier).signUpUser(
+                              name: _nameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                      }
+                    },
                   );
                 },
               ),
+
               15.sbH,
+
               //! already have an account
               RichText(
                 text: TextSpan(
@@ -143,7 +197,7 @@ class _SignupPageState extends State<SignupPage> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          // goTo(context: context, view: const LoginView());
+                          goTo(context: context, view: const LoginView());
                         },
                       text: 'Log in',
                       style: TextStyle(
