@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lizn/core/theme/theme.dart';
+import 'package:lizn/features/auth/view/pages/signup_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,13 +12,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(),
+    return ScreenUtilInit(
+      useInheritedMediaQuery: true,
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: false,
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.darkThemeMode,
+          home: const SignupPage(),
+        );
+      },
     );
   }
 }
