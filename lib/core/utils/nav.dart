@@ -41,7 +41,10 @@ fadeTo({
       }));
 }
 
-void goBackAndClearStack(BuildContext context, Widget view) {
+void goToAndClearStack({
+  required BuildContext context,
+  required Widget view,
+}) {
   Navigator.pushAndRemoveUntil(
     context,
     MaterialPageRoute(builder: (context) => view),

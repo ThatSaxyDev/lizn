@@ -13,9 +13,9 @@ import 'package:lizn/core/widgets/button.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/repositories/auth_remote_repository.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
-import 'package:lizn/features/auth/view/pages/test_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:lizn/features/home/views/home_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class LoginView extends ConsumerStatefulWidget {
@@ -41,7 +41,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   void nav() {
-    goTo(context: context, view: const TestView());
+    goTo(context: context, view: const HomeView());
   }
 
   @override
@@ -52,13 +52,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          // showSnackBar(
-          //   context: context,
-          //   theMessage: 'Account created',
-          //   theType: NotificationType.success,
-          // );
-
-          // goTo(context: context, view: const TestView());
+          goToAndClearStack(context: context, view: const HomeView());
         },
         error: (error, s) {
           showSnackBar(

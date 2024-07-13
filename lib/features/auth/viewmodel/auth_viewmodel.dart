@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:lizn/core/failure/failure.dart';
+import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/repositories/auth_local_repository.dart';
@@ -12,11 +13,13 @@ part 'auth_viewmodel.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
+  late CurrentUserNotifier _currentUserNotifier;
 
   @override
   AsyncValue<UserModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
+    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
     return null;
   }
 
@@ -66,6 +69,7 @@ class AuthViewModel extends _$AuthViewModel {
 
   AsyncValue<UserModel>? _loginSuccess(UserModel user) {
     _authLocalRepository.setToken(token: user.token);
+    _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }
 
@@ -80,12 +84,17 @@ class AuthViewModel extends _$AuthViewModel {
             l.message,
             StackTrace.current,
           ),
-        Right(value: UserModel r) => state = AsyncValue.data(r),
+        Right(value: UserModel r) => _getUserDataSuccess(r),
       };
 
       return val.value;
     }
 
     return null;
+  }
+
+  AsyncValue<UserModel> _getUserDataSuccess(UserModel user) {
+    _currentUserNotifier.addUser(user);
+    return state = AsyncValue.data(user);
   }
 }
