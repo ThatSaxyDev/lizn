@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lizn/core/theme/theme.dart';
+import 'package:lizn/core/utils/extensions.dart';
+import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
+import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  ProviderContainer container = ProviderContainer();
+  UserModel? userModel =
+      await container.read(authViewModelProvider.notifier).getUserData();
+  print(userModel.toString());
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
     ),
   );
 }
@@ -24,7 +33,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: false,
       builder: (context, child) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Lizn',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkThemeMode,
           home: const SignupPage(),

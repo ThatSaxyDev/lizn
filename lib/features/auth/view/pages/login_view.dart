@@ -46,18 +46,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+    bool isLoading = ref
+        .watch(authViewModelProvider.select((val) => val?.isLoading == true));
 
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          showSnackBar(
-            context: context,
-            theMessage: 'Account created',
-            theType: NotificationType.success,
-          );
+          // showSnackBar(
+          //   context: context,
+          //   theMessage: 'Account created',
+          //   theType: NotificationType.success,
+          // );
 
-          goTo(context: context, view: const TestView());
+          // goTo(context: context, view: const TestView());
         },
         error: (error, s) {
           showSnackBar(
