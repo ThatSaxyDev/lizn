@@ -8,13 +8,13 @@ import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:lizn/features/home/views/home_view.dart';
+import 'package:lizn/features/home/views/upload_song_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ProviderContainer container = ProviderContainer();
-  UserModel? userModel =
-      await container.read(authViewModelProvider.notifier).getUserData();
-  print(userModel.toString());
+  final container = ProviderContainer();
+  await container.read(authViewModelProvider.notifier).initSharedPreferences();
+  await container.read(authViewModelProvider.notifier).getUserData();
   runApp(
     UncontrolledProviderScope(
       container: container,
@@ -39,7 +39,8 @@ class MyApp extends ConsumerWidget {
           title: 'Lizn',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkThemeMode,
-          home: currentUser == null ? const SignupPage() : const HomeView(),
+          home:
+              currentUser == null ? const SignupPage() : const UploadSongView(),
         );
       },
     );

@@ -23,6 +23,10 @@ class AuthViewModel extends _$AuthViewModel {
     return null;
   }
 
+  Future<void> initSharedPreferences() async {
+    await _authLocalRepository.init();
+  }
+
   Future<void> signUpUser({
     required String name,
     required String email,
@@ -51,6 +55,7 @@ class AuthViewModel extends _$AuthViewModel {
     required String password,
   }) async {
     state = const AsyncValue.loading();
+
     Either<AppFailure, UserModel> res = await _authRemoteRepository.login(
       email: email,
       password: password,
@@ -68,14 +73,14 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   AsyncValue<UserModel>? _loginSuccess(UserModel user) {
-    _authLocalRepository.setToken(token: user.token);
+    _authLocalRepository.setToken(user.token);
     _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }
 
   Future<UserModel?> getUserData() async {
     state = const AsyncValue.loading();
-    final token = await _authLocalRepository.getToken();
+    final token = _authLocalRepository.getToken();
     if (token != null) {
       final res = await _authRemoteRepository.getCurrentUser(token: token);
 

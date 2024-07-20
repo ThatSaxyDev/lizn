@@ -1,6 +1,5 @@
 # lizn
 
-A Music Streaming App.
+A Podcast App.
 
 ## in progress
-

@@ -1,6 +1,5 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lizn/core/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_local_repository.g.dart';
 
@@ -10,20 +9,19 @@ AuthLocalRepository authLocalRepository(AuthLocalRepositoryRef ref) {
 }
 
 class AuthLocalRepository {
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  late SharedPreferences _sharedPreferences;
 
-  void setToken({required String? token}) {
+  Future<void> init() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  void setToken(String? token) {
     if (token != null) {
-      token.log();
-      _secureStorage.write(
-        key: 'x-auth-token',
-        value: token,
-      );
+      _sharedPreferences.setString('x-auth-token', token);
     }
   }
 
-  Future<String?> getToken() async {
-    final res = await _secureStorage.read(key: 'x-auth-token');
-    return res;
+  String? getToken() {
+    return _sharedPreferences.getString('x-auth-token');
   }
 }

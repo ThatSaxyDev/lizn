@@ -84,6 +84,7 @@ class AuthRemoteRepository {
   FutureEither<UserModel> getCurrentUser({
     required String token,
   }) async {
+    token.log();
     try {
       final res = await http.get(
         Uri.parse('${ServerConstants.serverUrl}/auth/'),
