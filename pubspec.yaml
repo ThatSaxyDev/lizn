@@ -50,6 +50,7 @@ dependencies:
   audio_waveforms: ^1.0.5
   shared_preferences: ^2.2.3
   uri_to_file: ^1.0.0
+  palette_generator: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

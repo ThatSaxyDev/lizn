@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:lizn/core/utils/extensions.dart';
@@ -36,4 +37,14 @@ Future<File?> pickImage() async {
     e.log();
     return null;
   }
+}
+
+//! convert color to hex
+String rgbToHex({required Color color}) {
+  return '${color.red.toRadixString(16).padLeft(2, '0')}${color.green.toRadixString(16).padLeft(2, '0')}${color.blue.toRadixString(16).padLeft(2, '0')}';
+}
+
+//! hex to color
+Color hexToColor({required String hex}) {
+  return Color(int.parse(hex, radix: 16) + 0xFF000000);
 }

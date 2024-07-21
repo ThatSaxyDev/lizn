@@ -15,7 +15,7 @@ import 'package:lizn/features/auth/repositories/auth_remote_repository.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lizn/features/home/views/home_view.dart';
+import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class LoginView extends ConsumerStatefulWidget {
@@ -40,10 +40,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
   }
 
-  void nav() {
-    goTo(context: context, view: const HomeView());
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isLoading = ref
@@ -52,7 +48,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          goToAndClearStack(context: context, view: const HomeView());
+          goToAndClearStack(context: context, view: const BaseNavView());
         },
         error: (error, s) {
           showSnackBar(

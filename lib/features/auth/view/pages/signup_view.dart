@@ -12,7 +12,7 @@ import 'package:lizn/core/widgets/button.dart';
 import 'package:lizn/features/auth/view/pages/login_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lizn/features/home/views/home_view.dart';
+import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
@@ -61,7 +61,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             theType: NotificationType.success,
           );
 
-          goToAndClearStack(context: context, view: const HomeView());
+          goToAndClearStack(context: context, view: const BaseNavView());
         },
         error: (error, s) {
           showSnackBar(

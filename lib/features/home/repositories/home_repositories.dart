@@ -35,6 +35,7 @@ class HomeRepository {
     required String creatorId,
   }) async {
     try {
+      final token = _authLocalRepository.getToken();
       final request = http.MultipartRequest(
         'POST',
         Uri.parse('${ServerConstants.serverUrl}/podcasts/upload'),
@@ -52,8 +53,7 @@ class HomeRepository {
           'creator_id': creatorId
         })
         ..headers.addAll({
-          'x-auth-token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyMTJjYjZhLWJhYzgtNGQyMS05YzQ2LTM1MmUwOGEyZDA3ZSJ9.nHcNRLojX9wQWtg-EXN8QWj06RqK2QDfoSoJ9wdBc54',
+          'x-auth-token': token!,
         });
 
       final res = await request.send();

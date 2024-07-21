@@ -7,8 +7,8 @@ import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lizn/features/home/views/home_view.dart';
-import 'package:lizn/features/home/views/upload_song_view.dart';
+import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
+import 'package:lizn/features/home/views/pages/upload_podcast_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,8 +39,7 @@ class MyApp extends ConsumerWidget {
           title: 'Lizn',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkThemeMode,
-          home:
-              currentUser == null ? const SignupPage() : const UploadSongView(),
+          home: currentUser == null ? const SignupPage() : const BaseNavView(),
         );
       },
     );
