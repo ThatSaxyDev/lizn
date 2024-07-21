@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:lizn/features/home/model/podcast_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:lizn/core/constants/server_constants.dart';
@@ -26,6 +27,8 @@ class HomeRepository {
   HomeRepository({
     required AuthLocalRepository authLocalRepository,
   }) : _authLocalRepository = authLocalRepository;
+
+  //! upload podcast
   FutureEither<String> uploadPodcast({
     required File selectedImage,
     required File selectedAudio,
@@ -70,6 +73,37 @@ class HomeRepository {
       }
 
       return Right(responseInMap['message']);
+    } catch (e) {
+      e.log();
+      return Left(AppFailure(message: e.toString()));
+    }
+  }
+
+  //! get all podcasts
+  FutureEither<List<PodcastModel>> getAllPodcasts() async {
+    try {
+      final token = _authLocalRepository.getToken();
+      final res = await http.get(
+        Uri.parse('${ServerConstants.serverUrl}/podcasts/get-all-podcasts'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token!,
+        },
+      );
+
+      final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
+
+      if (res.statusCode != 200) {
+        return Left(AppFailure(message: resBodyMap['message']));
+      }
+
+      List<PodcastModel> podcasts = [];
+
+      for (final map in resBodyMap['podcasts']) {
+        podcasts.add(PodcastModel.fromMap(map));
+      }
+
+      return Right(podcasts);
     } catch (e) {
       e.log();
       return Left(AppFailure(message: e.toString()));

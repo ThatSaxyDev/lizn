@@ -6,6 +6,7 @@ import 'package:lizn/core/theme/app_pallete.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/features/base_nav/viewmodel/base_nav_viewmodel.dart';
 import 'package:lizn/features/base_nav/views/widgets/nav_bar_widget.dart';
+import 'package:lizn/features/home/views/widgets/current_podcast_bar.dart';
 
 class BaseNavView extends ConsumerWidget {
   const BaseNavView({super.key});
@@ -15,7 +16,16 @@ class BaseNavView extends ConsumerWidget {
     int indexFromController = ref.watch(baseNavStateNotifierProvider);
     return Scaffold(
       // pages
-      body: pages[indexFromController],
+      body: SizedBox(
+        height: height(context),
+        width: width(context),
+        child: Stack(
+          children: [
+            pages[indexFromController],
+            const CurrentPodcastBar().alignBottomCenter(),
+          ],
+        ),
+      ),
 
       // nav bar
       bottomNavigationBar: Material(

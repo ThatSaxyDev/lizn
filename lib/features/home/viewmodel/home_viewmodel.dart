@@ -6,10 +6,20 @@ import 'package:lizn/core/failure/failure.dart';
 import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/utils/utils.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
+import 'package:lizn/features/home/model/podcast_model.dart';
 import 'package:lizn/features/home/repositories/home_repositories.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_viewmodel.g.dart';
+
+@riverpod
+Future<List<PodcastModel>> getAllPodcasts(GetAllPodcastsRef ref) async {
+  final res = await ref.watch(homeRepositoryProvider).getAllPodcasts();
+  return switch (res) {
+    Left(value: final l) => throw l.message,
+    Right(value: final r) => r,
+  };
+}
 
 @riverpod
 class HomeViewModel extends _$HomeViewModel {

@@ -31,7 +31,7 @@ fadeTo({
       transitionDuration: const Duration(milliseconds: 1000),
       transitionsBuilder: (context, animation, anotherAnimation, child) {
         animation = CurvedAnimation(
-          curve: Curves.linearToEaseOut,
+          curve: Curves.easeIn,
           parent: animation,
         );
         return FadeTransition(
@@ -52,7 +52,10 @@ void goToAndClearStack({
   );
 }
 
-slideTo(BuildContext context, Widget view) {
+slideTo({
+  required BuildContext context,
+  required Widget view,
+}) {
   Navigator.push(
     context,
     PageRouteBuilder(
@@ -60,6 +63,10 @@ slideTo(BuildContext context, Widget view) {
         return view;
       },
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        animation = CurvedAnimation(
+          curve: Curves.linearToEaseOut,
+          parent: animation,
+        );
         return SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(0.0, 1.0), // from bottom

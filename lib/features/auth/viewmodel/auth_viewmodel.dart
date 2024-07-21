@@ -99,6 +99,7 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   AsyncValue<UserModel> _getUserDataSuccess(UserModel user) {
+    _authLocalRepository.setToken(user.token);
     _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }

@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_viewmodel.dart';
+part of 'current_podcast_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'65278e304b562bd30f4fc9e7aa170b3771311b08';
+String _$currentPodcastNotifierHash() =>
+    r'2179f214fdc4044cb7fdb2bd1f04273e56aa77c0';
 
-/// See also [AuthViewModel].
-@ProviderFor(AuthViewModel)
-final authViewModelProvider =
-    AutoDisposeNotifierProvider<AuthViewModel, AsyncValue<UserModel>?>.internal(
-  AuthViewModel.new,
-  name: r'authViewModelProvider',
+/// See also [CurrentPodcastNotifier].
+@ProviderFor(CurrentPodcastNotifier)
+final currentPodcastNotifierProvider =
+    AutoDisposeNotifierProvider<CurrentPodcastNotifier, PodcastModel?>.internal(
+  CurrentPodcastNotifier.new,
+  name: r'currentPodcastNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$authViewModelHash,
+      : _$currentPodcastNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AuthViewModel = AutoDisposeNotifier<AsyncValue<UserModel>?>;
+typedef _$CurrentPodcastNotifier = AutoDisposeNotifier<PodcastModel?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

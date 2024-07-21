@@ -33,12 +33,17 @@
 	<string>Lizn requires access to your music</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Lizn requires access to your photo library</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Lizn requires access to your microphone</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires Mic permission.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
