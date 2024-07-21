@@ -113,26 +113,31 @@ class PodcastPlayer extends ConsumerWidget {
 
                     return Column(
                       children: [
-                        SliderTheme(
-                          data: SliderTheme.of(context).copyWith(
-                            activeTrackColor: Colors.white,
-                            inactiveTickMarkColor:
-                                Colors.white.withOpacity(0.12),
-                            thumbColor: Colors.white,
-                            trackHeight: 3.5,
-                            overlayShape: SliderComponentShape.noOverlay,
-                          ),
-                          child: Slider(
-                            value: value,
-                            min: 0,
-                            max: 1,
-                            onChanged: (val) {
-                              value = val;
-                            },
-                            onChangeEnd: (val) {
-                              currentPodcastNotifier.seekTrack(value: val);
-                            },
-                          ),
+                        StatefulBuilder(
+                          builder: (context, setState) {
+                            return SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                activeTrackColor: Colors.white,
+                                inactiveTickMarkColor:
+                                    Colors.white.withOpacity(0.12),
+                                thumbColor: Colors.white,
+                                trackHeight: 3.5,
+                                overlayShape: SliderComponentShape.noOverlay,
+                              ),
+                              child: Slider(
+                                value: value,
+                                min: 0,
+                                max: 1,
+                                onChanged: (val) {
+                                  value = val;
+                                  setState(() {});
+                                },
+                                onChangeEnd: (val) {
+                                  currentPodcastNotifier.seekTrack(value: val);
+                                },
+                              ),
+                            );
+                          },
                         ),
 
                         2.sbH,
@@ -141,11 +146,11 @@ class PodcastPlayer extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            '${position?.inMinutes.toString().padLeft(2, '0')}:${(position?.inSeconds.remainder(60)).toString().padLeft(2, '0')}'
+                            '${position?.inMinutes.toString()}:${(position?.inSeconds.remainder(60)).toString().padLeft(2, '0')}'
                                 .txt14(
                               color: Pallete.subtitleText,
                             ),
-                            '${duration?.inMinutes.toString().padLeft(2, '0')}:${(duration?.inSeconds.remainder(60)).toString().padLeft(2, '0')}'
+                            '${duration?.inMinutes.toString()}:${(duration?.inSeconds.remainder(60)).toString().padLeft(2, '0')}'
                                 .txt14(
                               color: Pallete.subtitleText,
                             ),
