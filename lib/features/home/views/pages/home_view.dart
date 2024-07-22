@@ -13,12 +13,61 @@ class HomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final recentlyPlayedPodcasts =
+        ref.watch(homeViewModelProvider.notifier).getRecentlyPlayedPodcasts();
+    ref.watch(currentPodcastNotifierProvider);
     return SafeArea(
       child: SizedBox(
         height: height(context),
         width: width(context),
         child: Column(
           children: [
+            if (recentlyPlayedPodcasts.isNotEmpty)
+              SizedBox(
+                height: 300.h,
+                child: GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w)
+                      .copyWith(top: 20.w),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 200.w / 60.h,
+                    crossAxisSpacing: 8.w,
+                    mainAxisSpacing: 8.h,
+                  ),
+                  itemCount: recentlyPlayedPodcasts.length,
+                  itemBuilder: (context, index) {
+                    PodcastModel podcast = recentlyPlayedPodcasts[index];
+                    return Container(
+                      padding: EdgeInsets.only(right: 5.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        color: Pallete.cardColor,
+                      ),
+                      child: Row(
+                        children: [
+                          ImageLoader(
+                            imageUrl: podcast.thumbnailURL,
+                            width: 60.h,
+                          ),
+                          6.sbW,
+                          Flexible(
+                            child: podcast.podcastName.txt(
+                              size: 13.sp,
+                              fontWeight: FontWeight.w600,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ).tap(onTap: () {
+                      ref
+                          .read(currentPodcastNotifierProvider.notifier)
+                          .updatePodcast(podcast: podcast);
+                    });
+                  },
+                ),
+              ),
             Padding(
               padding: EdgeInsets.only(top: 10.h, bottom: 20.h, left: 16.w),
               child: 'Lastest'

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_public_notifier_properties
 import 'package:lizn/features/home/model/podcast_model.dart';
+import 'package:lizn/features/home/repositories/home_local_repositories.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -9,13 +10,16 @@ part 'current_podcast_notifier.g.dart';
 class CurrentPodcastNotifier extends _$CurrentPodcastNotifier {
   AudioPlayer? audioPlayer;
   bool isPlaying = false;
+  late HomeLocalRepository _homeLocalRepository;
   @override
   PodcastModel? build() {
+    _homeLocalRepository = ref.watch(homeLocalRepositoryProvider);
     return null;
   }
 
   //! tap to play a podcast
   void updatePodcast({required PodcastModel podcast}) async {
+    await audioPlayer?.stop();
     audioPlayer = AudioPlayer();
 
     final audioSource = AudioSource.uri(
@@ -33,6 +37,8 @@ class CurrentPodcastNotifier extends _$CurrentPodcastNotifier {
         state = state?.copyWith(hexCode: state?.hexCode);
       }
     });
+
+    _homeLocalRepository.storePodcasts(podcast: podcast);
 
     audioPlayer!.play();
     isPlaying = true;

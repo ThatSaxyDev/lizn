@@ -34,7 +34,8 @@ class _CurrentPodcastBarState extends ConsumerState<CurrentPodcastBar> {
       children: [
         ColoredBox(
           color: Pallete.backgroundColor,
-          child: Container(
+          child: AnimatedContainer(
+            duration: 300.ms,
             height: 80.h,
             width: width(context),
             margin: 10.padH,

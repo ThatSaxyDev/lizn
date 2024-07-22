@@ -7,6 +7,7 @@ import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/utils/utils.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/home/model/podcast_model.dart';
+import 'package:lizn/features/home/repositories/home_local_repositories.dart';
 import 'package:lizn/features/home/repositories/home_repositories.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,10 +26,12 @@ Future<List<PodcastModel>> getAllPodcasts(GetAllPodcastsRef ref) async {
 class HomeViewModel extends _$HomeViewModel {
   late HomeRepository _homeRepository;
   late UserModel? _currentUser;
+  late HomeLocalRepository _homeLocalRepository;
   @override
   AsyncValue? build() {
     _homeRepository = ref.watch(homeRepositoryProvider);
     _currentUser = ref.watch(currentUserNotifierProvider);
+    _homeLocalRepository = ref.watch(homeLocalRepositoryProvider);
     return null;
   }
 
@@ -57,5 +60,10 @@ class HomeViewModel extends _$HomeViewModel {
     };
 
     print(val);
+  }
+
+  //! get recently playe songs from local storage
+  List<PodcastModel> getRecentlyPlayedPodcasts() {
+    return _homeLocalRepository.fetchPodcasts();
   }
 }

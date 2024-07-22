@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'current_podcast_notifier.dart';
+part of 'home_local_repositories.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentPodcastNotifierHash() =>
-    r'71f09927455a51768cf0883d498107ec3f9083ce';
+String _$homeLocalRepositoryHash() =>
+    r'30806b3c6a6c707b0b46e1f3406f89fd82b550dc';
 
-/// See also [CurrentPodcastNotifier].
-@ProviderFor(CurrentPodcastNotifier)
-final currentPodcastNotifierProvider =
-    AutoDisposeNotifierProvider<CurrentPodcastNotifier, PodcastModel?>.internal(
-  CurrentPodcastNotifier.new,
-  name: r'currentPodcastNotifierProvider',
+/// See also [homeLocalRepository].
+@ProviderFor(homeLocalRepository)
+final homeLocalRepositoryProvider =
+    AutoDisposeProvider<HomeLocalRepository>.internal(
+  homeLocalRepository,
+  name: r'homeLocalRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$currentPodcastNotifierHash,
+      : _$homeLocalRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentPodcastNotifier = AutoDisposeNotifier<PodcastModel?>;
+typedef HomeLocalRepositoryRef = AutoDisposeProviderRef<HomeLocalRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

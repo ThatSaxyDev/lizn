@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/theme/theme.dart';
 import 'package:lizn/core/utils/extensions.dart';
@@ -9,9 +10,12 @@ import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
 import 'package:lizn/features/home/views/pages/upload_podcast_view.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.defaultDirectory = dir.path;
   final container = ProviderContainer();
   await container.read(authViewModelProvider.notifier).initSharedPreferences();
   await container.read(authViewModelProvider.notifier).getUserData();
