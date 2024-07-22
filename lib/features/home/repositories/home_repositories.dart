@@ -109,4 +109,66 @@ class HomeRepository {
       return Left(AppFailure(message: e.toString()));
     }
   }
+
+  //! upload podcast
+  FutureEither<String> favouritePodcast({
+    required String podcastId,
+  }) async {
+    try {
+      final token = _authLocalRepository.getToken();
+      final res = await http.post(
+        Uri.parse('${ServerConstants.serverUrl}/podcasts/favourite-podcast'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token!,
+        },
+        body: jsonEncode({
+          "podcast_id": podcastId,
+        }),
+      );
+
+      final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
+
+      if (res.statusCode != 200) {
+        return Left(AppFailure(message: resBodyMap['message']));
+      }
+
+      return Right(resBodyMap['message']);
+    } catch (e) {
+      e.log();
+      return Left(AppFailure(message: e.toString()));
+    }
+  }
+
+  //! get favourite podcasts
+  FutureEither<List<PodcastModel>> getFavouritePodcasts() async {
+    try {
+      final token = _authLocalRepository.getToken();
+      final res = await http.get(
+        Uri.parse(
+            '${ServerConstants.serverUrl}/podcasts/get-favourite-podcasts'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token!,
+        },
+      );
+
+      final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
+
+      if (res.statusCode != 200) {
+        return Left(AppFailure(message: resBodyMap['message']));
+      }
+
+      List<PodcastModel> podcasts = [];
+
+      for (final map in resBodyMap['data']) {
+        podcasts.add(PodcastModel.fromMap(map['podcast']));
+      }
+
+      return Right(podcasts);
+    } catch (e) {
+      e.log();
+      return Left(AppFailure(message: e.toString()));
+    }
+  }
 }

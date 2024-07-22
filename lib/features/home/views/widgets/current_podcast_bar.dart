@@ -3,12 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lizn/core/providers/current_podcast_notifier.dart';
+import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
+import 'package:lizn/core/typedefs/type_defs.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/core/utils/nav.dart';
+import 'package:lizn/core/utils/snack_bar.dart';
 import 'package:lizn/core/utils/utils.dart';
 import 'package:lizn/core/widgets/image_loader.dart';
 import 'package:lizn/features/home/model/podcast_model.dart';
+import 'package:lizn/features/home/viewmodel/home_viewmodel.dart';
 import 'package:lizn/features/home/views/widgets/podcast_player.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -26,6 +30,8 @@ class _CurrentPodcastBarState extends ConsumerState<CurrentPodcastBar> {
     PodcastModel? currentPodcast = ref.watch(currentPodcastNotifierProvider);
     CurrentPodcastNotifier currentPodcastNotifier =
         ref.read(currentPodcastNotifierProvider.notifier);
+    final userFavouritePodcasts = ref.watch(
+        currentUserNotifierProvider.select((data) => data!.favouritePodcasts));
     if (currentPodcast == null) {
       return const SizedBox.shrink();
     }
@@ -88,8 +94,24 @@ class _CurrentPodcastBarState extends ConsumerState<CurrentPodcastBar> {
                 IconButton(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onPressed: () {},
-                  icon: const Icon(PhosphorIconsBold.heart),
+                  onPressed: () {
+                    ref.read(homeViewModelProvider.notifier).favouritePodcast(
+                          podcastId: currentPodcast.id,
+                          onSuccess: (message) {
+                            showBanner(
+                              context: context,
+                              theMessage: message,
+                              theType: NotificationType.info,
+                            );
+                          },
+                        );
+                  },
+                  icon: userFavouritePodcasts
+                          .where((fav) => fav.podcastId == currentPodcast.id)
+                          .toList()
+                          .isNotEmpty
+                      ? const Icon(PhosphorIconsFill.heart)
+                      : const Icon(PhosphorIconsBold.heart),
                 ),
                 IconButton(
                   splashColor: Colors.transparent,

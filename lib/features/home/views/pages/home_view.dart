@@ -24,7 +24,7 @@ class HomeView extends ConsumerWidget {
           children: [
             if (recentlyPlayedPodcasts.isNotEmpty)
               SizedBox(
-                height: 300.h,
+                height: 260.h,
                 child: GridView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 16.w)
                       .copyWith(top: 20.w),

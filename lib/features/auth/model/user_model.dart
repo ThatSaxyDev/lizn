@@ -1,16 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:lizn/features/home/model/favourite_podcast_model.dart';
+
 class UserModel {
   final String id;
   final String name;
   final String email;
   final String token;
+  final List<FavouritePodcastModel> favouritePodcasts;
   const UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.token,
+    required this.favouritePodcasts,
   });
 
   UserModel copyWith({
@@ -18,12 +24,14 @@ class UserModel {
     String? name,
     String? email,
     String? token,
+    List<FavouritePodcastModel>? favouritePodcasts,
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       token: token ?? this.token,
+      favouritePodcasts: favouritePodcasts ?? this.favouritePodcasts,
     );
   }
 
@@ -33,6 +41,8 @@ class UserModel {
       'name': name,
       'email': email,
       'token': token,
+      'favourites':
+          favouritePodcasts.map((podcast) => podcast.toMap()).toList(),
     };
   }
 
@@ -42,6 +52,10 @@ class UserModel {
       name: map["name"] ?? '',
       email: map["email"] ?? '',
       token: map["token"] ?? '',
+      favouritePodcasts: map['favourites'] != null
+          ? List<FavouritePodcastModel>.from(map['favourites']
+              .map((podcast) => FavouritePodcastModel.fromMap(podcast)))
+          : [],
     );
   }
 
@@ -52,7 +66,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, token: $token)';
+    return 'UserModel(id: $id, name: $name, email: $email, token: $token, favouritePodcasts: $favouritePodcasts)';
   }
 
   @override
@@ -62,11 +76,16 @@ class UserModel {
     return other.id == id &&
         other.name == name &&
         other.email == email &&
-        other.token == token;
+        other.token == token &&
+        listEquals(other.favouritePodcasts, favouritePodcasts);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ name.hashCode ^ email.hashCode ^ token.hashCode;
+    return id.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        token.hashCode ^
+        favouritePodcasts.hashCode;
   }
 }

@@ -7,7 +7,7 @@ part of 'current_podcast_notifier.dart';
 // **************************************************************************
 
 String _$currentPodcastNotifierHash() =>
-    r'71f09927455a51768cf0883d498107ec3f9083ce';
+    r'5a6d3fff3d9a2a1bd889e316cc2a3c7daafc27d3';
 
 /// See also [CurrentPodcastNotifier].
 @ProviderFor(CurrentPodcastNotifier)

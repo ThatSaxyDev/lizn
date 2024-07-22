@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_public_notifier_properties
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:lizn/features/home/model/podcast_model.dart';
 import 'package:lizn/features/home/repositories/home_local_repositories.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,6 +25,12 @@ class CurrentPodcastNotifier extends _$CurrentPodcastNotifier {
 
     final audioSource = AudioSource.uri(
       Uri.parse(podcast.podcastURL),
+      tag: MediaItem(
+        id: podcast.id,
+        title: podcast.podcastName,
+        artist: podcast.creatorName,
+        artUri: Uri.parse(podcast.thumbnailURL),
+      ),
     );
 
     await audioPlayer!.setAudioSource(audioSource);

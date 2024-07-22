@@ -22,7 +22,25 @@ final getAllPodcastsProvider =
 );
 
 typedef GetAllPodcastsRef = AutoDisposeFutureProviderRef<List<PodcastModel>>;
-String _$homeViewModelHash() => r'50c6529e08802c84be6c27796d39582e4382806f';
+String _$getFavouritePodcastsHash() =>
+    r'9f7c2b0f373f3278f5d7f99007ffdb7d7e969083';
+
+/// See also [getFavouritePodcasts].
+@ProviderFor(getFavouritePodcasts)
+final getFavouritePodcastsProvider =
+    AutoDisposeFutureProvider<List<PodcastModel>>.internal(
+  getFavouritePodcasts,
+  name: r'getFavouritePodcastsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getFavouritePodcastsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetFavouritePodcastsRef
+    = AutoDisposeFutureProviderRef<List<PodcastModel>>;
+String _$homeViewModelHash() => r'd79dd6a19095755fded30d20a37f38c844c0beb1';
 
 /// See also [HomeViewModel].
 @ProviderFor(HomeViewModel)
