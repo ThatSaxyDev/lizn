@@ -2,16 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:lizn/core/failure/failure.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
 import 'package:lizn/core/typedefs/type_defs.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/core/utils/nav.dart';
 import 'package:lizn/core/utils/snack_bar.dart';
 import 'package:lizn/core/widgets/button.dart';
-import 'package:lizn/features/auth/model/user_model.dart';
-import 'package:lizn/features/auth/repositories/auth_remote_repository.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
@@ -45,21 +41,21 @@ class _LoginViewState extends ConsumerState<LoginView> {
     bool isLoading = ref
         .watch(authViewModelProvider.select((val) => val?.isLoading == true));
 
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (data) {
-          goToAndClearStack(context: context, view: const BaseNavView());
-        },
-        error: (error, s) {
-          showSnackBar(
-            context: context,
-            theMessage: error.toString(),
-            theType: NotificationType.failure,
-          );
-        },
-        loading: () {},
-      );
-    });
+    // ref.listen(authViewModelProvider, (_, next) {
+    //   next?.when(
+    //     data: (data) {
+    //       goToAndClearStack(context: context, view: const BaseNavView());
+    //     },
+    //     error: (error, s) {
+    //       showSnackBar(
+    //         context: context,
+    //         theMessage: error.toString(),
+    //         theType: NotificationType.failure,
+    //       );
+    //     },
+    //     loading: () {},
+    //   );
+    // });
 
     return Scaffold(
       // appBar: AppBar(),
@@ -128,6 +124,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         ref.read(authViewModelProvider.notifier).loginUser(
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim(),
+                              onError: (l) {
+                                showSnackBar(
+                                  context: context,
+                                  theMessage: l,
+                                  theType: NotificationType.failure,
+                                );
+                              },
+                              onSuccess: () {
+                                goToAndClearStack(
+                                    context: context,
+                                    view: const BaseNavView());
+                              },
                             );
                       }
                     },

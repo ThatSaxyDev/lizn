@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/features/base_nav/viewmodel/base_nav_viewmodel.dart';

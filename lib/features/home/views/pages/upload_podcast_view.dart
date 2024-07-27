@@ -1,16 +1,17 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
+import 'package:lizn/core/typedefs/type_defs.dart';
 import 'package:lizn/core/utils/extensions.dart';
+import 'package:lizn/core/utils/nav.dart';
+import 'package:lizn/core/utils/snack_bar.dart';
 import 'package:lizn/core/utils/utils.dart';
 import 'package:lizn/core/widgets/button.dart';
 import 'package:lizn/core/widgets/text_input.dart';
-import 'package:lizn/features/home/repositories/home_repositories.dart';
 import 'package:lizn/features/home/viewmodel/home_viewmodel.dart';
 import 'package:lizn/features/home/views/widgets/audio_wave.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -169,15 +170,15 @@ class _UploadSongViewState extends ConsumerState<UploadSongView> {
                 controller: _songNameController,
               ),
               10.sbH,
-              ColorPicker(
-                color: selectedColor.value,
-                pickersEnabled: const {
-                  ColorPickerType.wheel: true,
-                },
-                onColorChanged: (Color color) {
-                  selectedColor.value = color;
-                },
-              ),
+              // ColorPicker(
+              //   color: selectedColor.value,
+              //   pickersEnabled: const {
+              //     ColorPickerType.wheel: true,
+              //   },
+              //   onColorChanged: (Color color) {
+              //     selectedColor.value = color;
+              //   },
+              // ),
               20.sbH,
               [
                 _songNameController,
@@ -207,6 +208,16 @@ class _UploadSongViewState extends ConsumerState<UploadSongView> {
                               podcastName: _songNameController.text.trim(),
                               creatorName: _artisteCOntroller.text.trim(),
                               selectedColor: imageBackgroundColor,
+                              onError: (l) {
+                                showSnackBar(
+                                  context: context,
+                                  theMessage: l,
+                                  theType: NotificationType.failure,
+                                );
+                              },
+                              onSuccess: () {
+                                goBack(context);
+                              },
                             );
                       }
                     },

@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lizn/features/home/views/pages/home_view.dart';
 import 'package:lizn/features/home/views/pages/library_view.dart';
-import 'package:lizn/features/home/views/pages/upload_podcast_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 final baseNavStateNotifierProvider =

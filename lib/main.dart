@@ -5,12 +5,9 @@ import 'package:hive/hive.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:lizn/core/providers/current_user_notifier.dart';
 import 'package:lizn/core/theme/theme.dart';
-import 'package:lizn/core/utils/extensions.dart';
-import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/view/pages/signup_view.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
-import 'package:lizn/features/home/views/pages/upload_podcast_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {

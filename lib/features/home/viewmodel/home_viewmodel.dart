@@ -53,6 +53,8 @@ class HomeViewModel extends _$HomeViewModel {
     required String podcastName,
     required String creatorName,
     required Color selectedColor,
+    required Function(String)? onError,
+    required Function()? onSuccess,
   }) async {
     state = const AsyncValue.loading();
 
@@ -66,9 +68,14 @@ class HomeViewModel extends _$HomeViewModel {
     );
 
     final val = switch (res) {
-      Left(value: AppFailure l) => state =
-          AsyncValue.error(l.message, StackTrace.current),
-      Right(value: String r) => state = AsyncValue.data(r),
+      Left(value: AppFailure l) => {
+          state = AsyncValue.error(l.message, StackTrace.current),
+          onError!(l.message),
+        },
+      Right(value: String r) => {
+          state = AsyncValue.data(r),
+          onSuccess!(),
+        },
     };
 
     val.log();

@@ -1,7 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:lizn/core/failure/failure.dart';
 import 'package:lizn/core/providers/current_user_notifier.dart';
-import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/features/auth/model/user_model.dart';
 import 'package:lizn/features/auth/repositories/auth_local_repository.dart';
 import 'package:lizn/features/auth/repositories/auth_remote_repository.dart';
@@ -31,6 +30,8 @@ class AuthViewModel extends _$AuthViewModel {
     required String name,
     required String email,
     required String password,
+    required Function(String)? onError,
+    required Function()? onSuccess,
   }) async {
     state = const AsyncValue.loading();
     Either<AppFailure, UserModel> res = await _authRemoteRepository.signup(
@@ -40,12 +41,16 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     final val = switch (res) {
-      Left(value: AppFailure l) => state = AsyncValue.error(
-          l.message,
-          StackTrace.current,
-        ),
+      Left(value: AppFailure l) => {
+          state = AsyncValue.error(
+            l.message,
+            StackTrace.current,
+          ),
+          onError!(l.message),
+        },
       Right(value: UserModel r) => {
           state = AsyncValue.data(r),
+          onSuccess!(),
         },
     };
   }
@@ -53,6 +58,8 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> loginUser({
     required String email,
     required String password,
+    required Function(String)? onError,
+    required Function()? onSuccess,
   }) async {
     state = const AsyncValue.loading();
 
@@ -62,14 +69,20 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     final val = switch (res) {
-      Left(value: AppFailure l) => state = AsyncValue.error(
-          l.message,
-          StackTrace.current,
-        ),
-      Right(value: UserModel r) => _loginSuccess(r),
+      Left(value: AppFailure l) => {
+          state = AsyncValue.error(
+            l.message,
+            StackTrace.current,
+          ),
+          onError!(l.message),
+        },
+      Right(value: UserModel r) => {
+          _loginSuccess(r),
+          onSuccess!(),
+        },
     };
 
-    val!.log();
+    // val!.log();
   }
 
   AsyncValue<UserModel>? _loginSuccess(UserModel user) {

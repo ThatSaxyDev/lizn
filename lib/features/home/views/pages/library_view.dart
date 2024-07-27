@@ -4,6 +4,7 @@ import 'package:lizn/core/providers/current_podcast_notifier.dart';
 import 'package:lizn/core/theme/app_pallete.dart';
 import 'package:lizn/core/utils/extensions.dart';
 import 'package:lizn/core/utils/nav.dart';
+import 'package:lizn/core/widgets/button.dart';
 import 'package:lizn/core/widgets/image_loader.dart';
 import 'package:lizn/features/home/model/podcast_model.dart';
 import 'package:lizn/features/home/viewmodel/home_viewmodel.dart';
@@ -25,8 +26,19 @@ class LibraryView extends ConsumerWidget {
         child: ref.watch(getFavouritePodcastsProvider).when(
           data: (List<PodcastModel> favourites) {
             if (favourites.isEmpty) {
-              return Center(
-                child: 'Nothing to seee here'.toString().txt16(),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  'Nothing to see here'.txt16(),
+                  20.sbH,
+                  BButton(
+                    onTap: () {
+                      goTo(context: context, view: const UploadSongView());
+                    },
+                    text: 'Upload',
+                    buttonTextColour: Colors.white,
+                  ),
+                ],
               );
             }
             return ListView.separated(

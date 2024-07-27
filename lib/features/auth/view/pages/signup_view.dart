@@ -12,7 +12,6 @@ import 'package:lizn/core/widgets/button.dart';
 import 'package:lizn/features/auth/view/pages/login_view.dart';
 import 'package:lizn/features/auth/view/widgets/custom_text_field.dart';
 import 'package:lizn/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lizn/features/base_nav/views/pages/base_nav_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
@@ -52,27 +51,27 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     bool isLoading = ref
         .watch(authViewModelProvider.select((val) => val?.isLoading == true));
 
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (data) {
-          showSnackBar(
-            context: context,
-            theMessage: 'Account created',
-            theType: NotificationType.success,
-          );
+    // ref.listen(authViewModelProvider, (_, next) {
+    //   next?.when(
+    //     data: (data) {
+    //       showSnackBar(
+    //         context: context,
+    //         theMessage: 'Account created',
+    //         theType: NotificationType.success,
+    //       );
 
-          goToAndClearStack(context: context, view: const BaseNavView());
-        },
-        error: (error, s) {
-          showSnackBar(
-            context: context,
-            theMessage: error.toString(),
-            theType: NotificationType.failure,
-          );
-        },
-        loading: () {},
-      );
-    });
+    //       goToAndClearStack(context: context, view: const BaseNavView());
+    //     },
+    //     error: (error, s) {
+    //       showSnackBar(
+    //         context: context,
+    //         theMessage: error.toString(),
+    //         theType: NotificationType.failure,
+    //       );
+    //     },
+    //     loading: () {},
+    //   );
+    // });
     return Scaffold(
       // appBar: AppBar(),
       body: SafeArea(
@@ -177,6 +176,21 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               name: _nameController.text.trim(),
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim(),
+                              onError: (l) {
+                                showSnackBar(
+                                  context: context,
+                                  theMessage: l,
+                                  theType: NotificationType.failure,
+                                );
+                              },
+                              onSuccess: () {
+                                showSnackBar(
+                                  context: context,
+                                  theMessage: 'Account created',
+                                  theType: NotificationType.success,
+                                );
+                                goTo(context: context, view: const LoginView());
+                              },
                             );
                       }
                     },
